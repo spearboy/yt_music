@@ -1,0 +1,173 @@
+.music-chart {
+    padding: 0 2rem 2rem 2rem;
+    position: relative;
+
+    >.title {
+        font-weight: 900;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        h2 {
+            font-weight: 900;
+        }
+
+        .date {
+            button {
+                background: transparent;
+                cursor: pointer;
+
+                svg {
+                    vertical-align: -7px;
+                    margin-right: 7px;
+                }
+
+                span {
+                    font-family: var(--fontJ);
+                    font-weight: 300;
+                }
+            }
+        }
+    }
+
+    >.list {
+        ul {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            li {
+                display: flex;
+                align-items: center;
+                margin: 4px 0;
+                padding: 5px 20px;
+                border-radius: 50px;
+                cursor: pointer;
+                font-family: var(--fontJ);
+                font-weight: 300;
+
+                .rank {
+                    flex: 0 0 50px;
+                    color: var(--black700);
+                }
+
+                .img {
+                    width: 50px;
+                    height: 50px;
+                    display: inline-block;
+                    margin-right: 20px;
+                    background-size: cover;
+                    background-position: center;
+                    border-radius: 5px;
+
+                    img {
+                        width: 100%;
+                        border-radius: 10px;
+                    }
+                }
+
+                .title {
+                    flex: 1;
+                }
+
+                .album {
+                    margin-left: auto;
+                    color: var(--black700);
+                    font-size: 14px;
+                }
+
+                &:hover {
+                    background-color: var(--white);
+
+                    .album {
+                        color: var(--black100);
+                    }
+                }
+            }
+        }
+    }
+}
+
+.youtube-result {
+    position: fixed;
+    left: 260px;
+    right: 400px;
+    bottom: 0;
+    height: 370px;
+    background-color: var(--pointBg);
+    padding: 2rem;
+
+    h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    li {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+        font-family: var(--fontJ);
+        font-weight: 300;
+        height: 44px;
+
+        .img {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: block;
+            margin-right: 10px;
+            background-size: 190%;
+            background-position: center;
+        }
+
+        .title {
+            flex: 1 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .playNow {
+            padding: 17px 3px 10px 3px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .listAdd {
+            padding: 15px 10px 10px 10px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .chartAdd {
+            padding: 15px 20px 10px 0px;
+            cursor: pointer;
+            font-size: 20px;
+            position: relative;
+        }
+
+        &:hover {
+            background-color: var(--pointColor);
+            border-radius: 50px;
+            color: var(--white);
+        }
+    }
+
+    .close {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 20px;
+        height: 20px;
+        background-color: var(--pointColor);
+        color: var(--white);
+        cursor: pointer;
+
+        svg {
+            font-size: 20px;
+        }
+    }
+
+}

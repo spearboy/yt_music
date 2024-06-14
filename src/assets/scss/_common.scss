@@ -1,0 +1,59 @@
+#main {
+    background-color: var(--mainBg);
+    margin-left: 260px;
+    margin-right: 400px;
+    position: relative;
+    min-height: 100vh;
+}
+
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 97.5px);
+}
+
+.error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    min-height: calc(100vh - 97.5px);
+
+    svg {
+        font-size: 3rem;
+        color: var(--pointColor);
+
+        span {
+            display: block;
+        }
+    }
+}
+
+.Toastify__toast-body {
+    font-family: var(--fontJ) !important;
+}
+
+.modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    outline: none;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+}
+
