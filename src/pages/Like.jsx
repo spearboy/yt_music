@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Chart from '../components/Chart'; // Corrected the import path
 
 const Like = () => {
     const [likedTracks, setLikedTracks] = useState([]);
@@ -11,15 +12,12 @@ const Like = () => {
     return (
         <section id='like'>
             <h2>좋아요 목록</h2>
-            <ul>
-                {likedTracks.map((track, index) => (
-                    <li key={index}>
-                        <span className='img' style={{ backgroundImage: `url(${track.imageURL})` }}></span>
-                        <span className='title'>{track.title}</span>
-                        <span className='artist'>{track.artist}</span>
-                    </li>
-                ))}
-            </ul>
+            <Chart 
+                title="좋아요 목록" 
+                data={likedTracks} 
+                showCalendar={false} 
+                isPlaylist={true} 
+            />
         </section>
     );
 }

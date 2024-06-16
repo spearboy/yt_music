@@ -9,7 +9,7 @@ const Header = ({ customPlaylists, setCustomPlaylists }) => {
     const [showInput, setShowInput] = useState(false);
     const [newItem, setNewItem] = useState('');
     const [playlistCount, setPlaylistCount] = useState(0);
-    const [selectedPlaylistState, setSelectedPlaylistState] = useState('');
+    const [selectedPlaylist, setSelectedPlaylist] = useState('');
 
     const predefinedPlaylists = [
         { name: "Mymusic", value: "bhlist" },
@@ -60,15 +60,12 @@ const Header = ({ customPlaylists, setCustomPlaylists }) => {
 
     const handlePlaylistChange = (e) => {
         const selected = e.target.value;
-        setSelectedPlaylistState(selected);
+        setSelectedPlaylist(selected);
 
         if (predefinedPlaylists.find(playlist => playlist.value === selected)) {
             navigate(`/mymusic/${selected}`);
         } else {
-            const playlist = JSON.parse(localStorage.getItem(selected));
-            if (playlist) {
-                navigate(`/playlist/${selected}`);
-            }
+            navigate(`/playlist/${selected}`);
         }
     };
 
@@ -91,7 +88,7 @@ const Header = ({ customPlaylists, setCustomPlaylists }) => {
                 <li><Link to='/like'><span className='icon2'><GrLike /></span>Like</Link></li>
                 <li>
                     <span className='icon2'><FcApproval /></span>
-                    <select value={selectedPlaylistState} onChange={handlePlaylistChange}>
+                    <select value={selectedPlaylist} onChange={handlePlaylistChange}>
                         <option value="" disabled>Select a playlist</option>
                         {predefinedPlaylists.map((playlist, index) => (
                             <option key={index} value={playlist.value}>{playlist.name}</option>

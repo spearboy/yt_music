@@ -3,7 +3,7 @@ import { MusicPlayerContext } from '../context/MusicPlayerProvider';
 import { IoMusicalNotes, IoPlaySkipForward, IoPlaySkipBack, IoPlay, IoPause, IoRepeat, IoShuffleOutline } from 'react-icons/io5';
 import ReactPlayer from 'react-player';
 
-const Aside = () => {
+const Aside = ({ currentPlaylist, selectedPlaylistState }) => {
     const {
         musicData,
         currentTrackIndex,
@@ -34,10 +34,10 @@ const Aside = () => {
     }, [currentTrackIndex]);
 
     useEffect(() => {
-        if (trackList.length > 0) {
-            console.log('Track list updated:', trackList);
+        if (selectedPlaylistState) {
+            setTrackList(currentPlaylist);
         }
-    }, [trackList]);
+    }, [currentPlaylist, selectedPlaylistState]);
 
     const handlePlayNow = (track) => {
         setTrackList([track]);
@@ -143,17 +143,17 @@ const Aside = () => {
             <div className="play-list">
                 <h3><IoMusicalNotes /> Play list</h3>
                 <ul>
-                    {trackList.map((track, index) => (
-                        <li
-                            key={index}
-                            ref={index === currentTrackIndex ? currentTrackRef : null}
-                            onClick={() => handlePlayNow(track)}
-                            className={index === currentTrackIndex ? 'current-track' : ''}
-                        >
-                            <span className="img" style={{ backgroundImage: `url(${track.imageURL})` }}></span>
-                            <span className="title">{track.title}</span>
-                        </li>
-                    ))}
+                {musicData.map((track, index) => (
+                    <li
+                    key={index}
+                    ref={index === currentTrackIndex ? currentTrackRef : null}
+                    onClick={() => playTrack(index)}
+                    className={index === currentTrackIndex ? 'current-track' : ''}
+                    >
+                    <span className="img" style={{ backgroundImage: `url(${track.imageURL})` }}></span>
+                    <span className="title">{track.title}</span>
+                    </li>
+                ))}
                 </ul>
             </div>
         </aside>

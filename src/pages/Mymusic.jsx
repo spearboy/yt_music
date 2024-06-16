@@ -10,7 +10,7 @@ const Mymusic = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { setMusicData } = useContext(MusicPlayerContext);
+  const { setMusicData, playTrack } = useContext(MusicPlayerContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,6 +33,7 @@ const Mymusic = () => {
 
   const handleUpdatePlaylist = () => {
     setMusicData(data);
+    playTrack(0); // 첫 번째 트랙을 재생
   };
 
   if (loading) return <Loading loading={loading} />;
@@ -40,12 +41,12 @@ const Mymusic = () => {
 
   return (
     <section id='myMusic'>
+      <button className='change_list_btn' onClick={handleUpdatePlaylist}>{filename}의 플레이 리스트로 변경하기</button>
       <Chart
         title={`🎵 ${filename} 리스트`}
         data={data}
         showCalendar={false}
       />
-      <button onClick={handleUpdatePlaylist}>변경</button>
     </section>
   );
 }

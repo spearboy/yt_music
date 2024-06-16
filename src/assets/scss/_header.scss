@@ -43,7 +43,19 @@
             a {
                 display: block;
             }
-
+            div {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-start;
+                padding: 0px 10px;
+                gap: 10px;
+                input {
+                    border: 1px solid var(--pointColor);
+                    border-radius: 4px;
+                    padding: 5px;
+                }
+            }
             .icon {
                 width: 20px;
                 height: 20px;
@@ -54,6 +66,13 @@
                 vertical-align: -4px;
                 border-radius: 3px;
                 margin-left: 20px;
+            }
+            select {
+                width: fit-content;
+                height: auto;
+                border: 1px solid var(--pointColor);
+                border-radius: 4px;
+                padding: 5px;
             }
 
             &:nth-child(1) .icon {

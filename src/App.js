@@ -16,6 +16,8 @@ import MusicPlayerProvider from "./context/MusicPlayerProvider";
 
 const App = () => {
     const [customPlaylists, setCustomPlaylists] = useState([]);
+    const [currentPlaylist, setCurrentPlaylist] = useState([]);
+    const [selectedPlaylistState, setSelectedPlaylistState] = useState('');
 
     useEffect(() => {
         const count = localStorage.getItem('playlistCount') || 0;
@@ -38,7 +40,12 @@ const App = () => {
     return (
         <MusicPlayerProvider>
             <BrowserRouter>
-                <Header customPlaylists={customPlaylists} setCustomPlaylists={setCustomPlaylists} />
+                <Header 
+                    customPlaylists={customPlaylists} 
+                    setCustomPlaylists={setCustomPlaylists} 
+                    setSelectedPlaylistState={setSelectedPlaylistState}
+                    setCurrentPlaylist={setCurrentPlaylist}
+                />
                 <Main>
                     <Search />
                     <Routes>
@@ -50,7 +57,7 @@ const App = () => {
                         <Route path="/chart/:id" element={<ChartList />} />
                     </Routes>
                 </Main>
-                <Aside />
+                <Aside currentPlaylist={currentPlaylist} selectedPlaylistState={selectedPlaylistState} />
             </BrowserRouter>
         </MusicPlayerProvider>
     );

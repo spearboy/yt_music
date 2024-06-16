@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useFetchData from '../hook/useFetchData';
-
 import Loading from '../components/Loading';
 import Error from '../components/Error';
 import Chart from '../components/Chart';
@@ -20,15 +19,16 @@ const ChartList = () => {
     if (error) return <Error message={error.message} />;
 
     return (
-      <Chart
-        title={`😜 ${id} 챠트 Top100`} 
-        data={data} 
-        showCalendar={true}
-        selectedDate={selectedDate} 
-        onDateChange={setSelectedDate} 
-        minDate={new Date('2024-05-01')} 
-        maxDate={yesterday} 
-      />
+        <Chart
+            title={`😜 ${id} 차트 Top100`} 
+            chartType={id} 
+            data={data} 
+            showCalendar={true}
+            selectedDate={selectedDate} 
+            onDateChange={setSelectedDate} 
+            minDate={new Date('2024-05-01')} 
+            maxDate={yesterday} 
+        />
     );
 };
 

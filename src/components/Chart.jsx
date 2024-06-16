@@ -1,14 +1,14 @@
-import React, { forwardRef, useContext, useState } from 'react';
+import React, { forwardRef, useContext, useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { FcCalendar } from 'react-icons/fc';
-import { MdFormatListBulletedAdd, MdOutlinePlayCircleFilled, MdClose, MdHive, MdThumbUp, MdHistory } from 'react-icons/md';
+import { MdFormatListBulletedAdd, MdOutlinePlayCircleFilled, MdClose, MdHive, MdThumbUp } from 'react-icons/md';
 import { MusicPlayerContext } from '../context/MusicPlayerProvider';
 import Modal from './Modal';
+import Chartgui from './Chartgui'; // Import the Chartgui component
 
 const CustomInput = forwardRef(({ value, onClick }, ref) => (
     <button onClick={onClick} ref={ref}>
@@ -17,26 +17,80 @@ const CustomInput = forwardRef(({ value, onClick }, ref) => (
     </button>
 ));
 
-const Chart = ({ title, showCalendar, selectedDate, onDateChange, minDate, maxDate, data }) => {
+const formatDate = (date) => {
+    const d = new Date(date);
+    let month = '' + (d.getMonth() + 1);
+    let day = '' + d.getDate();
+    const year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    return [year, month, day].join('-');
+};
+
+const buildUrl = (chartType, date) => {
+    return `https://raw.githubusercontent.com/webs9919/music-best/main/${chartType}/${chartType}100_${date}.json`;
+};
+
+const Chart = ({ title, chartType, showCalendar, selectedDate, onDateChange, minDate, maxDate, data, isPlaylist }) => {
     const { addTrackToList, addTrackToEnd, playTrack } = useContext(MusicPlayerContext);
 
     const [youtubeResults, setYoutubeResults] = useState([]);
     const [selectedTitle, setSelectedTitle] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedTrack, setSelectedTrack] = useState(null);
+    const [chartData, setChartData] = useState([]);
+
+    useEffect(() => {
+        const fetchChartData = async () => {
+            if (isPlaylist) return; // 좋아요 목록에서는 차트 데이터를 가져오지 않음
+            try {
+                const dates = Array.from({ length: 7 }, (_, i) => {
+                    const date = new Date(selectedDate);
+                    date.setDate(date.getDate() - i - 1); // 선택된 날짜부터 이전 7일
+                    return formatDate(date);
+                }).reverse();
+
+                const responses = await Promise.all(
+                    dates.map(async (date) => {
+                        const url = buildUrl(chartType, date);
+                        console.log(`Fetching data from URL: ${url}`);
+                        try {
+                            const response = await fetch(url);
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                            return response.json();
+                        } catch (error) {
+                            console.error(`Error fetching data for date ${date}:`, error);
+                            return null; // Return null if request fails
+                        }
+                    })
+                );
+
+                const chartData = data.map(item => {
+                    const ranks = responses.map((response, index) => {
+                        if (!response) return { date: dates[index], rank: null };
+                        const dayData = response.find(d => d.title === item.title);
+                        return { date: dates[index], rank: dayData ? dayData.rank : null };
+                    });
+                    return { title: item.title, ranks };
+                });
+
+                setChartData(chartData);
+            } catch (error) {
+                console.error('Error fetching chart data:', error);
+            }
+        };
+
+        fetchChartData();
+    }, [selectedDate, chartType, data, isPlaylist]);
 
     const searchYoutube = async (query) => {
         try {
-            const response = await axios.get('https://www.googleapis.com/youtube/v3/search', {
-                params: {
-                    part: 'snippet',
-                    q: query,
-                    type: 'video',
-                    maxResults: 5,
-                    key: 'AIzaSyBJa-2g-ehO_MGpUtr37dLCJQ8Nu4wRmxc',
-                },
-            });
-            setYoutubeResults(response.data.items);
+            const response = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${query}&type=video&maxResults=5&key=AIzaSyBJa-2g-ehO_MGpUtr37dLCJQ8Nu4wRmxc`);
+            const data = await response.json();
+            setYoutubeResults(data.items);
         } catch (error) {
             console.error('YouTube 검색에 실패했습니다.', error);
         }
@@ -143,6 +197,7 @@ const Chart = ({ title, showCalendar, selectedDate, onDateChange, minDate, maxDa
                                 <span className='rank'>#{item.rank}</span>
                                 <span className='img' style={{ backgroundImage: `url(${item.imageURL})` }}></span>
                                 <span className='title'>{item.title}</span>
+                                {!isPlaylist && <Chartgui chartData={chartData} itemTitle={item.title} />} {/* 추가된 부분 */}
                             </li>
                         ))}
                     </ul>

@@ -1,0 +1,16 @@
+#myMusic {
+    position: relative;
+    .change_list_btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        background-color: var(--pointColor);
+        color: var(--mainBg);
+        border-radius: 10px;
+        position: absolute;
+        top: 0px;
+        right: 40px;
+        z-index: 100;
+    }
+}
