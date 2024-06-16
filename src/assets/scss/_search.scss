@@ -1,6 +1,7 @@
 .search {
     position: relative;
     padding: 2rem;
+    z-index: 100;
 
     label {
         position: absolute;
@@ -16,4 +17,95 @@
         font-family: var(--fontJ);
         font-weight: 300;
     }
+
+.search-results {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 86px;
+    width: calc(100% - 70px);
+    border-radius: 20px;
+    height: 150px;
+    overflow-y: auto;
+    background-color: var(--pointBg);
+    padding: 2rem;
+
+    h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    li {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+        font-family: var(--fontJ);
+        font-weight: 300;
+        height: 44px;
+
+        .img {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: block;
+            margin-right: 10px;
+            background-size: 190%;
+            background-position: center;
+        }
+
+        .title {
+            flex: 1 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .playNow {
+            padding: 17px 3px 10px 3px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .listAdd {
+            padding: 15px 10px 10px 10px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .chartAdd {
+            padding: 15px 10px 10px 10px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .likeAdd {
+            padding: 15px 20px 10px 0px;
+            cursor: pointer;
+            font-size: 20px;
+            position: relative;
+        }
+
+        &:hover {
+            background-color: var(--pointColor);
+            border-radius: 50px;
+            color: var(--white);
+        }
+    }
+
+    .close {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 20px;
+        height: 20px;
+        background-color: var(--pointColor);
+        color: var(--white);
+        cursor: pointer;
+
+        svg {
+            font-size: 20px;
+        }
+    }
+
+}
 }

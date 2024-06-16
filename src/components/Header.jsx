@@ -1,55 +1,76 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom';
 import { FcRating, FcPlus, FcApproval } from "react-icons/fc";
+import { GrLike } from "react-icons/gr";
 import { IoMusicalNotes } from "react-icons/io5";
 
-const Header = () => {
-    const [showInput, setShowInput] = useState(false); // 입력 박스 표시 여부 상태
-    const [newItem, setNewItem] = useState(''); // 새 항목의 제목 상태
-    const [playlistCount, setPlaylistCount] = useState(0); // 플레이리스트 개수 상태
+const Header = ({ customPlaylists, setCustomPlaylists }) => {
+    const navigate = useNavigate();
+    const [showInput, setShowInput] = useState(false);
+    const [newItem, setNewItem] = useState('');
+    const [playlistCount, setPlaylistCount] = useState(0);
+    const [selectedPlaylistState, setSelectedPlaylistState] = useState('');
+
+    const predefinedPlaylists = [
+        { name: "Mymusic", value: "bhlist" },
+        { name: "Daewon", value: "Daewon" },
+        { name: "Hyeji List", value: "hyeji_list" },
+        { name: "Hyunmin", value: "hyunmin" },
+        { name: "Jungmin", value: "jungmin" },
+        { name: "Seoyeon", value: "seoyeon" },
+        { name: "Sohyun", value: "sohyun" },
+        { name: "Sungmin", value: "sungmin" },
+        { name: "Sunhwa", value: "sunhwa" },
+        { name: "Yih", value: "yih" },
+        { name: "Yoon List", value: "yoon_list" },
+    ];
 
     useEffect(() => {
-        const count = localStorage.getItem('playlistCount') || 0; // 로컬 스토리지에서 플레이리스트 개수를 가져옴
-        setPlaylistCount(Number(count)); // 상태 업데이트
-    }, []);
+        const count = localStorage.getItem('playlistCount') || 0;
+        setPlaylistCount(Number(count));
+    }, [customPlaylists]);
 
     const handleAddClick = () => {
-        setShowInput(true); // 입력 박스 표시
+        setShowInput(true);
     };
 
     const handleInputChange = (e) => {
-        setNewItem(e.target.value); // 입력 값 업데이트
+        setNewItem(e.target.value);
     };
 
     const handleAddItem = () => {
-        if (newItem.trim() !== '') { // 제목이 비어있지 않은 경우
-            const newCount = playlistCount + 1; // 새로운 플레이리스트 번호
-            const playlistKey = `playlist${newCount}`; // 플레이리스트 키 (예: playlist1, playlist2)
+        if (newItem.trim() !== '') {
+            const newCount = playlistCount + 1;
+            const playlistKey = `playlist${newCount}`;
             const newPlaylist = {
                 id: playlistKey,
                 name: newItem,
-                items: [] // 초기 항목 배열
+                items: []
             };
 
-            localStorage.setItem(playlistKey, JSON.stringify(newPlaylist)); // 로컬 스토리지에 저장
-            localStorage.setItem('playlistCount', newCount.toString()); // 플레이리스트 개수 저장
-            setPlaylistCount(newCount); // 상태 업데이트
-            setNewItem(''); // 입력 값 초기화
-            setShowInput(false); // 입력 박스 숨기기
+            localStorage.setItem(playlistKey, JSON.stringify(newPlaylist));
+            localStorage.setItem('playlistCount', newCount.toString());
+            setPlaylistCount(newCount);
+            setNewItem('');
+            setShowInput(false);
+
+            setCustomPlaylists([...customPlaylists, { name: newItem, value: playlistKey }]);
         }
     };
 
-    const playlistLinks = [];
-    for (let i = 1; i <= playlistCount; i++) {
-        const playlistKey = `playlist${i}`;
-        const playlist = JSON.parse(localStorage.getItem(playlistKey));
-        playlistLinks.push(
-            <li key={i}>
-                <Link to={`/playlist/${playlistKey}`}><span className='icon2'><FcApproval /></span>{playlist.name}</Link>
-            </li>
-        );
-    }
+    const handlePlaylistChange = (e) => {
+        const selected = e.target.value;
+        setSelectedPlaylistState(selected);
+
+        if (predefinedPlaylists.find(playlist => playlist.value === selected)) {
+            navigate(`/mymusic/${selected}`);
+        } else {
+            const playlist = JSON.parse(localStorage.getItem(selected));
+            if (playlist) {
+                navigate(`/playlist/${selected}`);
+            }
+        }
+    };
 
     return (
         <header id='header' role='banner'>
@@ -58,16 +79,28 @@ const Header = () => {
             </h1>
             <h2>chart</h2>
             <ul>
-                <li><Link to='chart/melon'><span className='icon'></span>멜론 챠트</Link></li>
-                <li><Link to='chart/bugs'><span className='icon'></span>벅스 챠트</Link></li>
-                <li><Link to='chart/apple'><span className='icon'></span>애플 챠트</Link></li>
-                <li><Link to='chart/genie'><span className='icon'></span>지니 챠트</Link></li>
-                <li><Link to='chart/billboard'><span className='icon'></span>빌보드 챠트</Link></li>
+                <li><Link to='/chart/melon'><span className='icon'></span>멜론 챠트</Link></li>
+                <li><Link to='/chart/bugs'><span className='icon'></span>벅스 챠트</Link></li>
+                <li><Link to='/chart/apple'><span className='icon'></span>애플 챠트</Link></li>
+                <li><Link to='/chart/genie'><span className='icon'></span>지니 챠트</Link></li>
+                <li><Link to='/chart/billboard'><span className='icon'></span>빌보드 챠트</Link></li>
             </ul>
             <h2>playlist</h2>
             <ul>
-                <li><Link to='/mymusic'><span className='icon2'><FcRating /></span>Mymusic</Link></li>
-                {playlistLinks}
+                <li><Link to='/recent'><span className='icon2'><FcRating /></span>Recent</Link></li>
+                <li><Link to='/like'><span className='icon2'><GrLike /></span>Like</Link></li>
+                <li>
+                    <span className='icon2'><FcApproval /></span>
+                    <select value={selectedPlaylistState} onChange={handlePlaylistChange}>
+                        <option value="" disabled>Select a playlist</option>
+                        {predefinedPlaylists.map((playlist, index) => (
+                            <option key={index} value={playlist.value}>{playlist.name}</option>
+                        ))}
+                        {customPlaylists.map((playlist, index) => (
+                            <option key={index + predefinedPlaylists.length} value={playlist.value}>{playlist.name}</option>
+                        ))}
+                    </select>
+                </li>
                 <li>
                     {showInput ? (
                         <div>
@@ -79,7 +112,7 @@ const Header = () => {
                             <button onClick={handleAddItem}>Add</button>
                         </div>
                     ) : (
-                        <Link to='#' onClick={handleAddClick}><span className='icon2'><FcPlus /></span>Create</Link>
+                        <a href="#" onClick={handleAddClick}><span className='icon2'><FcPlus /></span>Create</a>
                     )}
                 </li>
             </ul>

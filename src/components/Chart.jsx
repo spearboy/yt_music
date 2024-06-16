@@ -1,4 +1,4 @@
-import React, { forwardRef, useContext, useState } from 'react'
+import React, { forwardRef, useContext, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
@@ -6,7 +6,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { FcCalendar } from 'react-icons/fc';
-import { MdFormatListBulletedAdd, MdOutlinePlayCircleFilled, MdClose, MdHive } from 'react-icons/md';
+import { MdFormatListBulletedAdd, MdOutlinePlayCircleFilled, MdClose, MdHive, MdThumbUp, MdHistory } from 'react-icons/md';
 import { MusicPlayerContext } from '../context/MusicPlayerProvider';
 import Modal from './Modal';
 
@@ -90,6 +90,34 @@ const Chart = ({ title, showCalendar, selectedDate, onDateChange, minDate, maxDa
         }
     };
 
+    const handleAddToLike = (result) => {
+        const likedTracks = JSON.parse(localStorage.getItem('likedTracks')) || [];
+        const newTrack = {
+            title: result.snippet.title,
+            videoID: result.id.videoId,
+            imageURL: result.snippet.thumbnails.default.url,
+            artist: result.snippet.channelTitle,
+            rank: 1
+        };
+        likedTracks.push(newTrack);
+        localStorage.setItem('likedTracks', JSON.stringify(likedTracks));
+        toast.success('좋아요 목록에 추가했습니다.');
+    };
+
+    const handleAddToRecent = (result) => {
+        const recentTracks = JSON.parse(localStorage.getItem('recentTracks')) || [];
+        const newTrack = {
+            title: result.snippet.title,
+            videoID: result.id.videoId,
+            imageURL: result.snippet.thumbnails.default.url,
+            artist: result.snippet.channelTitle,
+            rank: 1
+        };
+        recentTracks.unshift(newTrack);
+        if (recentTracks.length > 50) recentTracks.pop(); // 최근 목록 50개로 제한
+        localStorage.setItem('recentTracks', JSON.stringify(recentTracks));
+    };
+
     return (
         <>
             <section className='music-chart'>
@@ -128,7 +156,7 @@ const Chart = ({ title, showCalendar, selectedDate, onDateChange, minDate, maxDa
                             <li key={index}>
                                 <span className='img' style={{ backgroundImage: `url(${result.snippet.thumbnails.default.url})` }}></span>
                                 <span className='title'>{result.snippet.title}</span>
-                                <span className='playNow' onClick={() => handlePlayNow(result)}>
+                                <span className='playNow' onClick={() => { handlePlayNow(result); handleAddToRecent(result); }}>
                                     <MdOutlinePlayCircleFilled /><span className='ir'>노래듣기</span>
                                 </span>
                                 <span className='listAdd' onClick={() => handleAddToList(result)}>
@@ -136,6 +164,9 @@ const Chart = ({ title, showCalendar, selectedDate, onDateChange, minDate, maxDa
                                 </span>
                                 <span className='chartAdd' onClick={() => handleAddToPlaylistClick(result)}>
                                     <MdHive /><span className='ir'>나의 리스트에 추가하기</span>
+                                </span>
+                                <span className='likeAdd' onClick={() => handleAddToLike(result)}>
+                                    <MdThumbUp /><span className='ir'>좋아요 추가하기</span>
                                 </span>
                             </li>
                         ))}
@@ -153,4 +184,4 @@ const Chart = ({ title, showCalendar, selectedDate, onDateChange, minDate, maxDa
     )
 }
 
-export default Chart
+export default Chart;

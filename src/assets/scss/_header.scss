@@ -29,6 +29,8 @@
     }
 
     ul {
+        max-height: calc(50% - 120px);
+        overflow-y: auto;
         li {
             color: var(--black500);
             font-weight: 400;

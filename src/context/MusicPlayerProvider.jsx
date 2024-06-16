@@ -1,5 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { createContext, useState, useCallback } from 'react';
 
 export const MusicPlayerContext = createContext();
 
@@ -12,83 +11,61 @@ const MusicPlayerProvider = ({ children }) => {
   const [isShuffling, setIsShuffling] = useState(false);
   const [isRepeating, setIsRepeating] = useState(false);
 
-  const playTrack = (index) => {
+  const playTrack = useCallback((index) => {
     setCurrentTrackIndex(index);
     setIsPlaying(true);
-    setPlayed(0);
-  };
+  }, []);
 
-  const pauseTrack = () => {
+  const pauseTrack = useCallback(() => {
     setIsPlaying(false);
-  };
+  }, []);
 
-  const nextTrack = () => {
-    if (isShuffling) {
-      setCurrentTrackIndex(Math.floor(Math.random() * musicData.length));
-    } else {
-      setCurrentTrackIndex((prevIndex) => (prevIndex + 1) % musicData.length);
-    }
-    setIsPlaying(true);
-    setPlayed(0);
-  };
+  const nextTrack = useCallback(() => {
+    setCurrentTrackIndex((prevIndex) => (prevIndex + 1) % musicData.length);
+  }, [musicData.length]);
 
-  const prevTrack = () => {
+  const prevTrack = useCallback(() => {
     setCurrentTrackIndex((prevIndex) => (prevIndex - 1 + musicData.length) % musicData.length);
-    setIsPlaying(true);
-    setPlayed(0);
-  };
+  }, [musicData.length]);
 
-  const updatePlayed = (played) => {
+  const updatePlayed = useCallback((played) => {
     setPlayed(played);
-  };
+  }, []);
 
-  const updateDuration = (duration) => {
+  const updateDuration = useCallback((duration) => {
     setDuration(duration);
-  };
+  }, []);
 
-  const toggleShuffle = () => {
-    setIsShuffling(!isShuffling);
-  };
+  const toggleShuffle = useCallback(() => {
+    setIsShuffling((prev) => !prev);
+  }, []);
 
-  const toggleRepeat = () => {
-    setIsRepeating(!isRepeating);
-  };
+  const toggleRepeat = useCallback(() => {
+    setIsRepeating((prev) => !prev);
+  }, []);
 
-  const handleTrackEnd = () => {
-    if (isRepeating) {
-      setPlayed(0);
-      setIsPlaying(true);
+  const handleTrackEnd = useCallback(() => {
+    if (isShuffling) {
+      const randomIndex = Math.floor(Math.random() * musicData.length);
+      playTrack(randomIndex);
     } else {
       nextTrack();
     }
-  };
-    // 재생 목록에 트랙을 추가하는 함수
-    const addTrackToList = (track) => {
-        setMusicData((prevMusicData) => [track, ...prevMusicData]);
-    };
+  }, [isShuffling, musicData.length, nextTrack, playTrack]);
 
-    // 재생 목록의 끝에 트랙을 추가하는 함수
-    const addTrackToEnd = (track) => {
-        setMusicData((prevMusicData) => [...prevMusicData, track]);
-    };
+  const addTrackToList = useCallback((track) => {
+    setMusicData((prevData) => [track, ...prevData]);
+  }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('/list_data/bhlist.json');
-        const data = await response.json();
-        setMusicData(data);
-      } catch (error) {
-        console.error('Failed to fetch data:', error);
-      }
-    };
-    fetchData();
+  const addTrackToEnd = useCallback((track) => {
+    setMusicData((prevData) => [...prevData, track]);
   }, []);
 
   return (
     <MusicPlayerContext.Provider
       value={{
         musicData,
+        setMusicData,  // 추가: 음악 데이터를 설정하는 함수
         currentTrackIndex,
         isPlaying,
         played,
@@ -104,17 +81,13 @@ const MusicPlayerProvider = ({ children }) => {
         toggleRepeat,
         isRepeating,
         handleTrackEnd,
-        addTrackToList,
-        addTrackToEnd
+        addTrackToList, // 추가: 리스트 앞에 트랙을 추가하는 함수
+        addTrackToEnd, // 추가: 리스트 끝에 트랙을 추가하는 함수
       }}
     >
       {children}
     </MusicPlayerContext.Provider>
   );
-};
-
-MusicPlayerProvider.propTypes = {
-  children: PropTypes.node.isRequired,
 };
 
 export default MusicPlayerProvider;
