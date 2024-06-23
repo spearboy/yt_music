@@ -5,38 +5,14 @@ MusicBH는 사용자가 음악을 탐색하고 즐길 수 있도록 설계된 �
 음악 탐색: 최신 히트곡, 트렌드 트랙 및 큐레이션된 재생 목록을 탐색할 수 있습니다.
 뮤직 비디오: 좋아하는 아티스트의 뮤직 비디오를 직접 시청할 수 있습니다.
 사용자 친화적인 인터페이스: 간단하고 직관적인 디자인으로 매끄러운 사용자 경험을 제공합니다.
-반응형 디자인: 모든 장치에서 최적화되어 데스크탑, 태블릿 및 모바일에서도 원활한 경험을 제공합니다.
-설치 방법
-로컬 환경에서 애플리케이션을 실행하기 위한 간단한 단계는 다음과 같습니다:
 
-# 리포지토리 클론:
+## 사이트 프리뷰
+![image](https://github.com/spearboy/yt_music/assets/95023009/83b5423f-73ed-4b68-96ac-b2d68e630f9b)
+![image](https://github.com/spearboy/yt_music/assets/95023009/3ed1f6da-6297-4329-ba88-eba0f121398e)
+![image](https://github.com/spearboy/yt_music/assets/95023009/54cd6f8d-9a61-49a9-891d-795a2543a215)
+![image](https://github.com/spearboy/yt_music/assets/95023009/b943dcc9-bb3d-4b22-9242-8c32bb1f8302)
 
-```sh
-git clone https://github.com/yourusername/musicbh.git
-```
-# 프로젝트 디렉터리로 이동:
 
-```sh
-cd musicbh
-```
-
-# 의존성 설치:
-
-```sh
-npm install
-```
-# 개발 서버 시작:
-
-```sh
-npm run dev
-```
-
-# 사용 방법
-
-1. 메인 페이지: 최신 음악, 인기 곡 및 추천 플레이리스트를 탐색할 수 있습니다.
-2. 검색 기능: 검색 창을 통해 원하는 음악이나 아티스트를 검색할 수 있습니다.
-3. 뮤직 비디오: 비디오 섹션에서 다양한 뮤직 비디오를 시청할 수 있습니다.
-4. 플레이리스트: 자신만의 재생 목록을 생성하고 관리할 수 있습니다.
 
 ## 기술 스택
 1. 프론트엔드: Vue.js, Swiper
