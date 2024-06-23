@@ -48,10 +48,6 @@ const Aside = ({ currentPlaylist, selectedPlaylistState }) => {
         setTrackList((prevList) => [...prevList, track]);
     };
 
-    if (musicData.length === 0) {
-        return <aside id="aside">Loading...</aside>;
-    }
-
     const currentTrack = musicData[currentTrackIndex];
 
     const handleProgress = (state) => updatePlayed(state.played);
@@ -78,28 +74,40 @@ const Aside = ({ currentPlaylist, selectedPlaylistState }) => {
         <aside id="aside">
             <div className="play-now">
                 <h2>
-                    <IoMusicalNotes /> Now Playing
+                    지금 재생중
                 </h2>
                 <div className="thumb">
-                    <div className="img">
-                        {currentTrack && (
-                            <ReactPlayer
-                                ref={playerRef}
-                                url={`https://www.youtube.com/watch?v=${currentTrack.videoID}`}
-                                controls={false}
-                                width="100%"
-                                height="100%"
-                                playing={isPlaying}
-                                onEnded={handleTrackEndModified}
-                                onProgress={handleProgress}
-                                onDuration={handleDuration}
-                            />
-                        )}
+                    <div
+                        className="img"
+                        style={{
+                            backgroundImage: currentTrack ? `url(${currentTrack.imageURL})` : 'none',
+                        }}
+                    >
+                        <div className='thumb_video'>
+                            {currentTrack && (
+                                <ReactPlayer
+                                    ref={playerRef}
+                                    url={`https://www.youtube.com/watch?v=${currentTrack.videoID}`}
+                                    controls={false}
+                                    width="100%"
+                                    height="100%"
+                                    playing={isPlaying}
+                                    onEnded={handleTrackEndModified}
+                                    onProgress={handleProgress}
+                                    onDuration={handleDuration}
+                                />
+                            )}
+                        </div>
                     </div>
-                    {currentTrack && (
+                    {currentTrack ? (
                         <>
                             <span className="title">{currentTrack.title}</span>
                             <span className="artist">{currentTrack.artist}</span>
+                        </>
+                    ) : (
+                        <>
+                            <span className="title">재생중인 노래가 없습니다.</span>
+                            <span className="artist">노래를 추가해주세요.</span>
                         </>
                     )}
                 </div>

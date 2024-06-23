@@ -47,6 +47,7 @@ const Home = () => {
         }
 
         setRecommendations(allRecommendations);
+        console.log(allRecommendations)
       } catch (error) {
         console.error('추천 플레이리스트를 불러오는데 실패했습니다.', error);
       }
@@ -77,12 +78,12 @@ const Home = () => {
     <div className="home">
       <div className="background"></div>
       <div className="content">
-        <h1>Welcome to My Music Chart</h1>
         <section className="recommendations">
-          <h2>추천 플레이리스트</h2>
+          <h2>추천 음악</h2>
           <ul>
             {recommendations.length > 0 ? recommendations.map((track, index) => (
               <li key={index}>
+                <span className="img" style={{backgroundImage:`url(${track.imageURL})`}}></span>
                 <span className="title">{track.title}</span>
                 <span className="artist">{track.artist}</span>
               </li>
@@ -94,23 +95,11 @@ const Home = () => {
           <ul>
             {recentTracks.length > 0 ? recentTracks.map((track, index) => (
               <li key={index}>
+                <span className="img" style={{backgroundImage:`url(${track.imageURL})`}}></span>
                 <span className="title">{track.title}</span>
                 <span className="artist">{track.artist}</span>
               </li>
             )) : <li>최근 재생한 트랙이 없습니다.</li>}
-          </ul>
-        </section>
-        <section className="music-news">
-          <h2>음악 뉴스</h2>
-          <ul>
-            {news.length > 0 ? news.map((article, index) => (
-              <li key={index}>
-                <a href={article.url} target="_blank" rel="noopener noreferrer">
-                  <img src={article.urlToImage} alt={article.title} />
-                  {article.title}
-                </a>
-              </li>
-            )) : <li>뉴스를 불러오는데 실패했습니다.</li>}
           </ul>
         </section>
       </div>

@@ -43,7 +43,7 @@ const Mymusic = () => {
     <section id='myMusic'>
       <button className='change_list_btn' onClick={handleUpdatePlaylist}>{filename}의 플레이 리스트로 변경하기</button>
       <Chart
-        title={`🎵 ${filename} 리스트`}
+        title={`${filename} 리스트`}
         data={data}
         showCalendar={false}
       />

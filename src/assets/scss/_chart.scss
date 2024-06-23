@@ -8,6 +8,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        color: var(--white);
 
         h2 {
             font-weight: 900;
@@ -70,20 +71,17 @@
 
                 .title {
                     flex: 1;
+                    color: var(--white);
                 }
 
                 .album {
                     margin-left: auto;
-                    color: var(--black700);
+                    color: var(--white);
                     font-size: 14px;
                 }
 
                 &:hover {
-                    background-color: var(--white);
-
-                    .album {
-                        color: var(--black100);
-                    }
+                    background-color: var(--pointColor);
                 }
             }
         }
@@ -96,8 +94,9 @@
     right: 400px;
     bottom: 0;
     height: 370px;
-    background-color: var(--pointBg);
+    background-color: var(--black100);
     padding: 2rem;
+    color: var(--white);
 
     h3 {
         font-size: 1.5rem;

@@ -8,7 +8,6 @@ import { FcCalendar } from 'react-icons/fc';
 import { MdFormatListBulletedAdd, MdOutlinePlayCircleFilled, MdClose, MdHive, MdThumbUp } from 'react-icons/md';
 import { MusicPlayerContext } from '../context/MusicPlayerProvider';
 import Modal from './Modal';
-import Chartgui from './Chartgui'; // Import the Chartgui component
 
 const CustomInput = forwardRef(({ value, onClick }, ref) => (
     <button onClick={onClick} ref={ref}>
@@ -39,7 +38,6 @@ const Chart = ({ title, chartType, showCalendar, selectedDate, onDateChange, min
     const [selectedTitle, setSelectedTitle] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedTrack, setSelectedTrack] = useState(null);
-    const [chartData, setChartData] = useState([]);
 
     useEffect(() => {
         const fetchChartData = async () => {
@@ -68,16 +66,8 @@ const Chart = ({ title, chartType, showCalendar, selectedDate, onDateChange, min
                     })
                 );
 
-                const chartData = data.map(item => {
-                    const ranks = responses.map((response, index) => {
-                        if (!response) return { date: dates[index], rank: null };
-                        const dayData = response.find(d => d.title === item.title);
-                        return { date: dates[index], rank: dayData ? dayData.rank : null };
-                    });
-                    return { title: item.title, ranks };
-                });
+                // Process chartData here if needed
 
-                setChartData(chartData);
             } catch (error) {
                 console.error('Error fetching chart data:', error);
             }
@@ -197,7 +187,6 @@ const Chart = ({ title, chartType, showCalendar, selectedDate, onDateChange, min
                                 <span className='rank'>#{item.rank}</span>
                                 <span className='img' style={{ backgroundImage: `url(${item.imageURL})` }}></span>
                                 <span className='title'>{item.title}</span>
-                                {!isPlaylist && <Chartgui chartData={chartData} itemTitle={item.title} />} {/* 추가된 부분 */}
                             </li>
                         ))}
                     </ul>

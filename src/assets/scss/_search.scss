@@ -1,7 +1,7 @@
 .search {
     position: relative;
     padding: 2rem;
-    z-index: 100;
+    z-index: 110;
 
     label {
         position: absolute;
@@ -21,13 +21,14 @@
 .search-results {
     position: absolute;
     left: 50%;
+    z-index: 1000;
     transform: translateX(-50%);
     top: 86px;
     width: calc(100% - 70px);
     border-radius: 20px;
-    height: 150px;
+    height: 324px;
     overflow-y: auto;
-    background-color: var(--pointBg);
+    background-color: var(--black200);
     padding: 2rem;
 
     h3 {
@@ -42,6 +43,7 @@
         font-family: var(--fontJ);
         font-weight: 300;
         height: 44px;
+        color: var(--white);
 
         .img {
             width: 44px;

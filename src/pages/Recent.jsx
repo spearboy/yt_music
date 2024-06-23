@@ -25,7 +25,7 @@ const Recent = () => {
     return (
         <section id='recent'>
             <Chart
-                title="🎧 최근 들은 노래"
+                title="최근 들은 노래"
                 data={recentTracks}
                 showCalendar={false}
             />

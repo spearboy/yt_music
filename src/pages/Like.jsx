@@ -11,7 +11,6 @@ const Like = () => {
 
     return (
         <section id='like'>
-            <h2>좋아요 목록</h2>
             <Chart 
                 title="좋아요 목록" 
                 data={likedTracks} 
